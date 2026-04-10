@@ -2,8 +2,10 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.SetmealDish;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
@@ -72,6 +74,10 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDishMapper.deleteBySetmealIds(ids);
     }
 
+
+    /**
+     * 根据id查询套餐和套餐菜品关系
+     */
     @Override
     public SetmealVO getByIdWithDish(Long id) {
         //封装套餐基本信息
@@ -85,6 +91,10 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealVO;
     }
 
+
+    /**
+     * 修改套餐
+     */
     @Override
     @Transactional //开启事务
     public void update(SetmealDTO setmealDTO) {
@@ -101,5 +111,29 @@ public class SetmealServiceImpl implements SetmealService {
         }
         //插入新的关联关系
         setmealDishMapper.insertBatch(setmealDishes);
+    }
+
+
+    /**
+     * 套餐起售、停售
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        //如果套餐有停售的菜品，则不能起售
+        if (status == StatusConstant.ENABLE) {
+            List<Dish> dishList = setmealMapper.getBySetmealId(id);
+            if (dishList != null && dishList.size() > 0) {
+                for (Dish dish : dishList) {
+                    if (dish.getStatus() == StatusConstant.DISABLE) {
+                        throw new RuntimeException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                    }
+                }
+            }
+        }
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+        setmealMapper.update(setmeal);
     }
 }
