@@ -32,4 +32,15 @@ public interface SetmealMapper {
      * 套餐分页查询
      */
     Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 根据id查询套餐和套餐菜品关系
+     */
+    @Select("select * from setmeal where id = #{id}")
+    Setmeal getById(Long id);
+
+    /**
+     * 批量删除套餐
+     */
+    void deleteBatch(List<Long> ids);
 }
