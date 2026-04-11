@@ -9,6 +9,7 @@ import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class DishController {
      * 新增菜品
      */
     @PostMapping
+    //缓存清理
+    @CacheEvict(value = "dishCache",allEntries = true)
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("新增菜品");
         dishService.saveWithFlavor(dishDTO);
@@ -43,6 +46,7 @@ public class DishController {
      * 批量删除菜品
      */
     @DeleteMapping
+
     public Result delete(@RequestParam List<Long> ids) {
         log.info("批量删除菜品：{}", ids);
         dishService.deleteBatch(ids);
@@ -64,6 +68,7 @@ public class DishController {
      * 修改菜品
      */
     @PutMapping
+    @CacheEvict(value = "dishCache",allEntries = true)
     public Result update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品：{}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
@@ -74,6 +79,7 @@ public class DishController {
      * 菜品起售停售
      */
     @PostMapping("/status/{status}")
+    @CacheEvict(value = "dishCache",allEntries = true)
     public Result<String> startOrStop(@PathVariable Integer status, Long id){
         dishService.startOrStop(status,id);
         return Result.success();
