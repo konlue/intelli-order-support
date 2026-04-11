@@ -71,6 +71,15 @@ public class DishController {
     }
 
     /**
+     * 菜品起售停售
+     */
+    @PostMapping("/status/{status}")
+    public Result<String> startOrStop(@PathVariable Integer status, Long id){
+        dishService.startOrStop(status,id);
+        return Result.success();
+    }
+
+    /**
      * 根据分类id查询菜品
      */
     @GetMapping("/list")
@@ -78,5 +87,6 @@ public class DishController {
         List<Dish> list = dishService.list(categoryId);
         return Result.success(list);
     }
+
 }
 

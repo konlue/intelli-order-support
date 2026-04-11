@@ -19,10 +19,17 @@ public interface DishService {
 
     void updateWithFlavor(DishDTO dishDTO);
 
+    /**
+     * 菜品起售停售
+     */
+    void startOrStop(Integer status, Long id);
+
     List<Dish> list(Long categoryId);
 
     /**
      * 条件查询菜品和口味
      */
     List<DishVO> listWithFlavor(Dish dish);
+
+
 }
