@@ -8,9 +8,13 @@ import org.apache.ibatis.annotations.Select;
 public interface UserMapper {
 
     /**
+     * 根据id查询用户
+     */
+    @Select("select * from user where id = #{id}")
+    User getById(Long id);
+
+    /**
      * 根据openid查询用户
-     * @param openid
-     * @return
      */
     @Select("select * from user where openid = #{openid}")
     User getByOpenid(String openid);
