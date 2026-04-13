@@ -29,5 +29,18 @@ public interface OrderService {
      */
     PageResult pageQuery4User(int page, int pageSize, Integer status);
 
+    /**
+     * 订单详情
+     */
     OrderVO details(Long id);
+
+    /**
+     * 用户取消订单
+     */
+    void userCancelById(Long id) throws Exception;
+
+    /**
+     * 再来一单
+     */
+    void repetition(Long id);
 }
