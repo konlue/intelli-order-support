@@ -61,6 +61,6 @@ public interface OrderMapper {
      * 根据动态条件统计营业额
      */
     Double sumByMap(Integer status, LocalDateTime begin, LocalDateTime end);
-    
+
 
 }
