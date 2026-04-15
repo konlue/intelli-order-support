@@ -19,19 +19,19 @@ public class ShopController {
      * 设置营业状态
      */
     @PutMapping("/{status}")
-    public Result setStatus(@PathVariable Integer status) {
-        log.info("设置店铺状态为：{}", status == StatusConstant.ENABLE ? "营业中" : "打烊中");
-        redisTemplate.opsForValue().set(KEY, status);
+    public Result setStatus(@PathVariable Integer status){
+        log.info("设置店铺的营业状态为：{}",status == 1 ? "营业中" : "打烊中");
+        redisTemplate.opsForValue().set(KEY,status);
         return Result.success();
     }
 
     /**
-     * 获取管理端营业状态
+     * 获取店铺的营业状态
      */
     @GetMapping("/status")
-    public Result<Integer> getStatus() {
+    public Result<Integer> getStatus(){
         Integer status = (Integer) redisTemplate.opsForValue().get(KEY);
-        log.info("获取店铺状态为：{}", status == StatusConstant.ENABLE ? "营业中" : "打烊中");
+        log.info("获取到店铺的营业状态为：{}",status == 1 ? "营业中" : "打烊中");
         return Result.success(status);
     }
 }
